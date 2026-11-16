@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CampusConnect - Event Portal</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f5f6fc;
+    color: #252b40;
+}
+
+header {
+    background: #202b55;
+    color: white;
+    padding: 20px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    box-shadow: 0 3px 12px #202b5525;
+}
+
+header h2, footer h3 { margin: 0; }
+header span, footer span { color: #c4b5fd; }
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 8px;
+    font-size: 14px;
+}
+nav a:hover { color: #c4b5fd; }
+
+.hero {
+    background:
+        linear-gradient(90deg, rgba(233,231,255,.97), rgba(233,231,255,.72)),
+        url("https://www.lpu.in/lpu-assets/images/campus-life/campus-events/spectra-2024.jpg");
+    background-size: cover;
+    background-position: center;
+    padding: 65px 8%;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.hero .eyebrow {
+    color: #6254c7;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.hero h1 {
+    color: #202b55;
+    font-size: 42px;
+    margin: 8px 0;
+}
+.hero h1 span { color: #6254c7; }
+
+.hero p {
+    color: #555b70;
+    line-height: 1.7;
+    max-width: 520px;
+}
+
+.button {
+    display: inline-block;
+    background: linear-gradient(135deg, #6254c7, #8b72ec);
+    color: white;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 7px;
+    text-decoration: none;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 14px;
+    transition: .2s;
+}
+.button:hover {
+    background: #40358f;
+    transform: translateY(-1px);
+}
+.button:disabled {
+    background: #aaa5c8;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.container {
+    width: 86%;
+    max-width: 1100px;
+    margin: 35px auto;
+}
+
+h2 { color: #202b55; }
+
+.section-note {
+    color: #686d83;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.event-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.event-card {
+    background: white;
+    border: 1px solid #e0e2ed;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(52,48,115,.08);
+    transition: transform .2s, box-shadow .2s;
+}
+.event-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 9px 20px rgba(52,48,115,.14);
+}
+
+.event-image {
+    width: 100%;
+    height: 175px;
+    object-fit: cover;
+    display: block;
+    background: #e8e5ff;
+}
+
+.event-content { padding: 18px; }
+.event-card h3 { color: #6254c7; margin-top: 12px; }
+.event-card p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #555b70;
+    overflow-wrap: anywhere;
+}
+
+.category {
+    display: inline-block;
+    background: #eeecff;
+    color: #40358f;
+    border-radius: 20px;
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.seats {
+    background: #e2f7e9;
+    color: #176534;
+    padding: 7px 9px;
+    border-radius: 5px;
+    display: inline-block;
+    font-size: 12px;
+    margin-top: 5px;
+}
+.seats.full {
+    background: #ffe5e5;
+    color: #9b1c1c;
+}
+
+.panel {
+    background: white;
+    padding: 24px;
+    border: 1px solid #e0e2ed;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 14px rgba(52,48,115,.05);
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 12px 0 5px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #ccd0df;
+    border-radius: 6px;
+    font-family: Arial, sans-serif;
+    background: #fcfcff;
+}
+input:focus, select:focus, textarea:focus {
+    outline: 2px solid #d5ceff;
+    border-color: #6254c7;
+}
+textarea { resize: vertical; min-height: 80px; }
+
+.message {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 6px;
+}
+
+.table-box { overflow-x: auto; }
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 15px;
+    font-size: 13px;
+}
+th, td {
+    border: 1px solid #e0e2ed;
+    padding: 10px;
+    text-align: left;
+}
+th { background: #eeecff; color: #40358f; }
+
+.small-button { padding: 6px 10px; font-size: 12px; margin: 2px; }
+
+#confirmationSlip {
+    background: linear-gradient(135deg, #fff, #f1efff);
+    border-left: 5px solid #6254c7;
+    overflow-wrap: anywhere;
+}
+
+footer {
+    background: #202b55;
+    color: white;
+    text-align: center;
+    padding: 28px 20px;
+    margin-top: 45px;
+}
+footer p { font-size: 13px; color: #d8dcef; }
+
+@media (max-width: 800px) {
+    .event-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    header { align-items: flex-start; }
+    .hero h1 { font-size: 34px; }
+}
+
+@media (max-width: 550px) {
+    .event-grid { grid-template-columns: 1fr; }
+    .hero { padding: 40px 7%; }
+    .hero h1 { font-size: 29px; }
+    nav a { display: inline-block; margin: 5px; }
+    .container { width: 90%; }
+    .panel { padding: 18px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h2>🎓 Campus<span>Connect.</span></h2>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#events">Events</a>
+        <a href="#register">Register</a>
+        <a href="#dashboard">Organizer</a>
+    </nav>
+</header>
+
+<section class="hero" id="home">
+    <p class="eyebrow">WELCOME TO CAMPUSCONNECT</p>
+    <h1>Discover Campus <span>Events!</span></h1>
+    <p>
+        Explore college fests, workshops, seminars and competitions.
+        Find your next experience and make wonderful campus memories.
+    </p>
+    <div><a href="#events" class="button">Explore Events →</a></div>
+</section>
+
+<main class="container">
+
+    <section id="events">
+        <h2>✨ Upcoming Events</h2>
+        <p class="section-note">
+            Explore exciting events, meet new people and reserve your seat.
+        </p>
+        <div class="event-grid" id="eventList"></div>
+    </section>
+
+    <section id="register" style="margin-top:40px;">
+        <h2>📝 Student Registration</h2>
+        <p class="section-note">Fill in your details to register for your favourite event.</p>
+
+        <div class="panel">
+            <form id="registrationForm">
+                <label for="studentName">Full Name</label>
+                <input type="text" id="studentName" placeholder="Enter your name" required>
+
+                <label for="studentEmail">Email Address</label>
+                <input type="email" id="studentEmail" placeholder="Enter your email" required>
+
+                <label for="studentNumber">Registration Number</label>
+                <input type="text" id="studentNumber" placeholder="Enter your university ID" required>
+
+                <label for="eventChoice">Select Event</label>
+                <select id="eventChoice" required>
+                    <option value="">Choose an event</option>
+                </select>
+
+                <button type="submit" class="button">Register Now →</button>
+            </form>
+            <div id="registrationMessage" aria-live="polite"></div>
+        </div>
+    </section>
+
+    <section id="confirmation">
+        <h2>🎟️ Registration Confirmation</h2>
+        <div class="panel" id="confirmationSlip">
+            Your confirmation slip will appear here after registration.
+        </div>
+    </section>
+
+    <section id="dashboard">
+        <h2>🛠️ Organizer Dashboard</h2>
+        <p class="section-note">Add new campus events and view registered students.</p>
+
+        <div class="panel">
+            <h3 style="color:#6254c7;">➕ Add a New Event</h3>
+            <form id="eventForm">
+                <label for="newEventName">Event Name</label>
+                <input type="text" id="newEventName" placeholder="Enter event name" required>
+
+                <label for="newEventDate">Event Date</label>
+                <input type="date" id="newEventDate" required>
+
+                <label for="newEventVenue">Venue</label>
+                <input type="text" id="newEventVenue" placeholder="Enter venue" required>
+
+                <label for="newEventCategory">Category</label>
+                <select id="newEventCategory">
+                    <option>Technology</option>
+                    <option>Cultural</option>
+                    <option>Workshop</option>
+                    <option>Sports</option>
+                    <option>Academic</option>
+                </select>
+
+                <label for="newEventEligibility">Eligibility</label>
+                <input type="text" id="newEventEligibility" placeholder="For example: All students" required>
+
+                <label for="newEventDescription">Description</label>
+                <textarea id="newEventDescription" placeholder="Describe your event" required></textarea>
+
+                <label for="newEventCapacity">Maximum Seats</label>
+                <input type="number" id="newEventCapacity" min="1" max="10000" required>
+
+                <button type="submit" class="button">Add Event</button>
+            </form>
+            <div id="eventMessage" aria-live="polite"></div>
+        </div>
+
+        <div class="panel">
+            <h3 style="color:#6254c7;">📋 Manage Events</h3>
+            <div class="table-box">
+                <table>
+                    <thead>
+                        <tr><th>Event</th><th>Date</th><th>Seats Left</th><th>Action</th></tr>
+                    </thead>
+                    <tbody id="eventTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h3 style="color:#6254c7;">👥 Registered Students</h3>
+            <div class="table-box">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student</th><th>Registration No.</th><th>Event</th>
+                            <th>Confirmation ID</th><th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <h3>🎓 Campus<span>Connect</span></h3>
+    <p>Making campus event registration simple.</p>
+    <p>CA1 Project | HTML, CSS and JavaScript</p>
+</footer>
+
+<script>
+// Sample events
+let events = [
+    {
+        id: 1,
+        name: "Innovation Tech Fest",
+        date: "2026-11-15",
+        venue: "University Auditorium",
+        category: "Technology",
+        eligibility: "All university students",
+        description: "Explore technology, coding and innovation.",
+        capacity: 50
+    },
+    {
+        id: 2,
+        name: "Cultural Fest",
+        date: "2026-11-20",
+        venue: "Open Air Theatre",
+        category: "Cultural",
+        eligibility: "All university students",
+        description: "Enjoy music, dance and cultural performances.",
+        capacity: 40
+    },
+    {
+        id: 3,
+        name: "Web Development Workshop",
+        date: "2026-11-25",
+        venue: "Computer Lab",
+        category: "Workshop",
+        eligibility: "Interested students",
+        description: "Learn the basics of website development.",
+        capacity: 30
+    }
+];
+
+let registrations = [];
+let nextEventId = 4;
+let nextRegistrationId = 1;
+
+// Official LPU event photos. These are illustrative photos,
+// not photos of the exact sample events listed above.
+function getEventImage(category) {
+    if (category === "Cultural") {
+        return "https://www.lpu.in/lpu-assets/images/campus-life/campus-events/spectra-2024.jpg";
+    } else if (category === "Workshop" || category === "Academic") {
+        return "https://www.lpu.in/lpu-assets/images/campus-life/campus-events/sahaja-yoga-meditation.webp";
+    } else if (category === "Sports") {
+        return "https://www.lpu.in/lpu-assets/images/campus-life/campus-events/annual-athletic-meet.webp";
+    }
+    return "https://www.lpu.in/lpu-assets/images/campus-life/campus-events/techSprint.jpg";
+}
+
+// Display all events
+function displayEvents() {
+    let eventList = document.getElementById("eventList");
+    let eventChoice = document.getElementById("eventChoice");
+
+    eventList.innerHTML = "";
+    eventChoice.innerHTML = '<option value="">Choose an event</option>';
+
+    for (let i = 0; i < events.length; i++) {
+        let event = events[i];
+        let booked = 0;
+
+        for (let j = 0; j < registrations.length; j++) {
+            if (registrations[j].eventId === event.id) booked++;
+        }
+
+        let available = event.capacity - booked;
+        let eventImage = getEventImage(event.category);
+
+        eventList.innerHTML += `
+            <div class="event-card">
+                <img class="event-image"
+                     src="${eventImage}"
+                     alt="${event.category} event photo"
+                     loading="lazy"
+                     onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=700&q=80';">
+                <div class="event-content">
+                    <span class="category">${event.category}</span>
+                    <h3>${event.name}</h3>
+                    <p>${event.description}</p>
+                    <p><b>📅 Date:</b> ${event.date}</p>
+                    <p><b>📍 Venue:</b> ${event.venue}</p>
+                    <p><b>👥 Eligibility:</b> ${event.eligibility}</p>
+                    <span class="seats ${available === 0 ? "full" : ""}">
+                        ${available} seats available
+                    </span><br>
+                    <button class="button"
+                        onclick="selectEvent(${event.id})"
+                        ${available === 0 ? "disabled" : ""}>
+                        ${available === 0 ? "Event Full" : "Register"}
+                    </button>
+                </div>
+            </div>
+        `;
+
+        if (available > 0) {
+            eventChoice.innerHTML += `<option value="${event.id}">${event.name}</option>`;
+        }
+    }
+}
+
+// Select event from card
+function selectEvent(eventId) {
+    document.getElementById("eventChoice").value = eventId;
+    document.getElementById("register").scrollIntoView({ behavior: "smooth" });
+}
+
+// Student registration
+document.getElementById("registrationForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let name = document.getElementById("studentName").value.trim();
+    let email = document.getElementById("studentEmail").value.trim();
+    let number = document.getElementById("studentNumber").value.trim();
+    let eventId = Number(document.getElementById("eventChoice").value);
+    let selectedEvent = null;
+
+    for (let i = 0; i < events.length; i++) {
+        if (events[i].id === eventId) selectedEvent = events[i];
+    }
+
+    if (!selectedEvent) {
+        showMessage("registrationMessage", "Please select an event.", false);
+        return;
+    }
+
+    let booked = 0;
+
+    for (let i = 0; i < registrations.length; i++) {
+        if (registrations[i].eventId === eventId) booked++;
+
+        if (
+            registrations[i].eventId === eventId &&
+            registrations[i].number.toLowerCase() === number.toLowerCase()
+        ) {
+            showMessage("registrationMessage", "You are already registered for this event.", false);
+            return;
+        }
+    }
+
+    if (booked >= selectedEvent.capacity) {
+        showMessage("registrationMessage", "Sorry, this event is full.", false);
+        displayEvents();
+        return;
+    }
+
+    let registration = {
+        id: nextRegistrationId,
+        name: name,
+        email: email,
+        number: number,
+        eventId: eventId,
+        confirmationId: "CC" + String(nextRegistrationId).padStart(4, "0")
+    };
+
+    registrations.push(registration);
+    nextRegistrationId++;
+
+    showMessage("registrationMessage", "Registration successful!", true);
+    showConfirmation(registration, selectedEvent);
+
+    document.getElementById("registrationForm").reset();
+
+    displayEvents();
+    displayEventTable();
+    displayStudentTable();
+});
+
+// Confirmation slip
+function showConfirmation(registration, event) {
+    document.getElementById("confirmationSlip").innerHTML = `
+        <h3>🎉 Registration Confirmed!</h3>
+        <p><b>Confirmation ID:</b> ${registration.confirmationId}</p>
+        <p><b>Student:</b> ${registration.name}</p>
+        <p><b>Registration Number:</b> ${registration.number}</p>
+        <p><b>Email:</b> ${registration.email}</p>
+        <p><b>Event:</b> ${event.name}</p>
+        <p><b>Date:</b> ${event.date}</p>
+        <p><b>Venue:</b> ${event.venue}</p>
+        <button class="button" onclick="window.print()">Print / Save as PDF</button>
+    `;
+}
+
+// Success and error messages
+function showMessage(elementId, message, success) {
+    let element = document.getElementById(elementId);
+    element.innerHTML = `
+        <div class="message"
+            style="background:${success ? '#e4f7e9' : '#ffe5e5'};
+            color:${success ? '#176534' : '#9b1c1c'}">
+            ${message}
+        </div>
+    `;
+}
+
+// Add an event
+document.getElementById("eventForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let name = document.getElementById("newEventName").value.trim();
+    let date = document.getElementById("newEventDate").value;
+    let venue = document.getElementById("newEventVenue").value.trim();
+    let category = document.getElementById("newEventCategory").value;
+    let eligibility = document.getElementById("newEventEligibility").value.trim();
+    let description = document.getElementById("newEventDescription").value.trim();
+    let capacity = Number(document.getElementById("newEventCapacity").value);
+
+    if (capacity < 1 || !Number.isInteger(capacity)) {
+        showMessage("eventMessage", "Please enter a valid seat limit.", false);
+        return;
+    }
+
+    if (date < new Date().toISOString().slice(0, 10)) {
+        showMessage("eventMessage", "Please select today or a future date.", false);
+        return;
+    }
+
+    let newEvent = {
+        id: nextEventId,
+        name: name,
+        date: date,
+        venue: venue,
+        category: category,
+        eligibility: eligibility,
+        description: description,
+        capacity: capacity
+    };
+
+    events.push(newEvent);
+    nextEventId++;
+
+    showMessage("eventMessage", "Event added successfully!", true);
+    document.getElementById("eventForm").reset();
+
+    displayEvents();
+    displayEventTable();
+});
+
+// Event table
+function displayEventTable() {
+    let table = document.getElementById("eventTable");
+    table.innerHTML = "";
+
+    for (let i = 0; i < events.length; i++) {
+        let event = events[i];
+        let booked = 0;
+
+        for (let j = 0; j < registrations.length; j++) {
+            if (registrations[j].eventId === event.id) booked++;
+        }
+
+        let available = event.capacity - booked;
+
+        table.innerHTML += `
+            <tr>
+                <td>${event.name}</td>
+                <td>${event.date}</td>
+                <td>${available} / ${event.capacity}</td>
+                <td>
+                    <button class="button small-button" onclick="deleteEvent(${event.id})">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        `;
+    }
+}
+
+// Delete an event only if nobody registered
+function deleteEvent(eventId) {
+    let hasRegistrations = false;
+
+    for (let i = 0; i < registrations.length; i++) {
+        if (registrations[i].eventId === eventId) hasRegistrations = true;
+    }
+
+    if (hasRegistrations) {
+        alert("Cancel its student registrations before deleting it.");
+        return;
+    }
+
+    if (confirm("Do you want to delete this event?")) {
+        events = events.filter(event => event.id !== eventId);
+        displayEvents();
+        displayEventTable();
+    }
+}
+
+// Registered students table
+function displayStudentTable() {
+    let table = document.getElementById("studentTable");
+    table.innerHTML = "";
+
+    for (let i = 0; i < registrations.length; i++) {
+        let registration = registrations[i];
+        let eventName = "";
+
+        for (let j = 0; j < events.length; j++) {
+            if (events[j].id === registration.eventId) eventName = events[j].name;
+        }
+
+        table.innerHTML += `
+            <tr>
+                <td>${registration.name}</td>
+                <td>${registration.number}</td>
+                <td>${eventName}</td>
+                <td>${registration.confirmationId}</td>
+                <td>
+                    <button class="button small-button"
+                        onclick="cancelRegistration(${registration.id})">
+                        Cancel
+                    </button>
+                </td>
+            </tr>
+        `;
+    }
+}
+
+// Cancel registration and update available seats
+function cancelRegistration(registrationId) {
+    if (confirm("Cancel this registration?")) {
+        registrations = registrations.filter(
+            registration => registration.id !== registrationId
+        );
+
+        displayEvents();
+        displayEventTable();
+        displayStudentTable();
+
+        document.getElementById("confirmationSlip").innerHTML =
+            "Registration cancelled. Seats have been updated.";
+    }
+}
+
+// Load the website
+displayEvents();
+displayEventTable();
+displayStudentTable();
+</script>
+
+</body>
+</html>
+
